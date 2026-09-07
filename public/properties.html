@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties - Real Estate CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">RE CRM</a>
+        <div class="w-100 d-flex justify-content-end align-items-center pe-3">
+            <span class="text-light me-3 user-name-display"></span>
+            <a class="btn btn-outline-light btn-sm" href="#" id="logout-btn">Sign out</a>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="leads.html">Leads</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="properties.html">Properties</a></li>
+                        <li class="nav-item"><a class="nav-link" href="bookings.html">Bookings</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Properties</h1>
+                    <div class="admin-only">
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#projectModal">Add Project</button>
+                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#buildingModal">Add Building</button>
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#unitModal">Add Unit</button>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Select Project</label>
+                        <select class="form-select" id="project-select">
+                            <option value="">-- Select Project --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Select Building</label>
+                        <select class="form-select" id="building-select" disabled>
+                            <option value="">-- Select Building --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="loader" class="loader">Loading...</div>
+                
+                <div class="table-responsive d-none" id="units-container">
+                    <h4>Units</h4>
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Unit Number</th>
+                                <th>Floor</th>
+                                <th>Type</th>
+                                <th>Area</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="units-table"></tbody>
+                    </table>
+                    <div id="units-empty" class="empty-state d-none">No units found for this building.</div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals for Admin -->
+    <div class="modal fade" id="projectModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Add Project</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <form id="project-form">
+                        <div class="mb-3"><label>Project Name *</label><input type="text" class="form-control" id="proj_name" required></div>
+                        <div class="mb-3"><label>Location</label><input type="text" class="form-control" id="proj_loc"></div>
+                        <div class="mb-3"><label>Description</label><textarea class="form-control" id="proj_desc"></textarea></div>
+                        <button type="submit" class="btn btn-primary w-100">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="buildingModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Add Building</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <form id="building-form">
+                        <div class="mb-3"><label>Project *</label><select class="form-select" id="bld_proj_id" required></select></div>
+                        <div class="mb-3"><label>Building Name *</label><input type="text" class="form-control" id="bld_name" required></div>
+                        <div class="mb-3"><label>Floors</label><input type="number" class="form-control" id="bld_floors" value="1"></div>
+                        <button type="submit" class="btn btn-primary w-100">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="unitModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Add Unit</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <form id="unit-form">
+                        <div class="mb-3"><label>Building *</label><select class="form-select" id="unit_bld_id" required></select></div>
+                        <div class="mb-3"><label>Unit Number *</label><input type="text" class="form-control" id="unit_num" required></div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3"><label>Floor</label><input type="number" class="form-control" id="unit_floor"></div>
+                            <div class="col-md-6 mb-3"><label>Type (e.g. 2BHK)</label><input type="text" class="form-control" id="unit_type"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3"><label>Area (sq ft)</label><input type="number" class="form-control" id="unit_area"></div>
+                            <div class="col-md-6 mb-3"><label>Price *</label><input type="number" class="form-control" id="unit_price" required></div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Status</label>
+                            <select class="form-select" id="unit_status">
+                                <option value="Available">Available</option>
+                                <option value="Blocked">Blocked</option>
+                                <option value="Booked">Booked</option>
+                                <option value="Sold">Sold</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/properties.js"></script>
+</body>
+</html>

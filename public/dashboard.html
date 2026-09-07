@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Real Estate CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">RE CRM</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="w-100 d-flex justify-content-end align-items-center pe-3">
+            <span class="text-light me-3 user-name-display"></span>
+            <a class="btn btn-outline-light btn-sm" href="#" id="logout-btn">Sign out</a>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="dashboard.html">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="leads.html">Leads</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="properties.html">Properties</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="bookings.html">Bookings</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                </div>
+
+                <div id="loader" class="loader d-block">Loading...</div>
+                
+                <div id="dashboard-content" class="d-none">
+                    <!-- KPIs -->
+                    <div class="row mb-4">
+                        <div class="col-md-3"><div class="card text-center text-bg-primary"><div class="card-body"><h5>Total Leads</h5><h2 id="kpi-total">0</h2></div></div></div>
+                        <div class="col-md-3"><div class="card text-center text-bg-info"><div class="card-body"><h5>New Leads</h5><h2 id="kpi-new">0</h2></div></div></div>
+                        <div class="col-md-3"><div class="card text-center text-bg-success"><div class="card-body"><h5>Bookings</h5><h2 id="kpi-bookings">0</h2></div></div></div>
+                        <div class="col-md-3"><div class="card text-center text-bg-danger"><div class="card-body"><h5>Overdue Follow-ups</h5><h2 id="kpi-overdue">0</h2></div></div></div>
+                    </div>
+                    
+                    <div class="row mb-4 admin-only">
+                        <div class="col-md-6"><div class="card text-center text-bg-light"><div class="card-body"><h5>Available Units</h5><h2 id="kpi-available-units">0</h2></div></div></div>
+                        <div class="col-md-6"><div class="card text-center text-bg-secondary text-white"><div class="card-body"><h5>Booked Units</h5><h2 id="kpi-booked-units">0</h2></div></div></div>
+                    </div>
+
+                    <!-- Pipeline -->
+                    <h4 class="mt-4">Lead Pipeline</h4>
+                    <div class="d-flex flex-wrap mb-4" id="pipeline-container">
+                        <div class="pipeline-stage"><strong>New</strong><br><span id="pipe-new">0</span></div>
+                        <div class="pipeline-stage"><strong>Contacted</strong><br><span id="pipe-contacted">0</span></div>
+                        <div class="pipeline-stage"><strong>Site Visit</strong><br><span id="pipe-sitevisit">0</span></div>
+                        <div class="pipeline-stage"><strong>Interested</strong><br><span id="pipe-interested">0</span></div>
+                        <div class="pipeline-stage"><strong>Negotiation</strong><br><span id="pipe-negotiation">0</span></div>
+                        <div class="pipeline-stage"><strong>Booked</strong><br><span id="pipe-booked">0</span></div>
+                        <div class="pipeline-stage"><strong>Lost</strong><br><span id="pipe-lost">0</span></div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Overdue Followups -->
+                        <div class="col-md-6">
+                            <h4>Recent Overdue Follow-ups</h4>
+                            <div class="card">
+                                <div class="card-body p-0">
+                                    <table class="table table-hover mb-0">
+                                        <thead><tr><th>Lead</th><th>Activity</th><th>Date</th></tr></thead>
+                                        <tbody id="overdue-table"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Bookings -->
+                        <div class="col-md-6">
+                            <h4>Recent Bookings</h4>
+                            <div class="card">
+                                <div class="card-body p-0">
+                                    <table class="table table-hover mb-0">
+                                        <thead><tr><th>Code</th><th>Customer</th><th>Unit</th><th>Date</th></tr></thead>
+                                        <tbody id="bookings-table"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.css"></script>
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Details - Real Estate CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">RE CRM</a>
+        <div class="w-100 text-end text-light px-3 user-name-display"></div>
+        <div class="navbar-nav"><div class="nav-item text-nowrap"><a class="nav-link px-3" href="#" id="logout-btn">Sign out</a></div></div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="leads.html">Leads</a></li>
+                        <li class="nav-item"><a class="nav-link" href="properties.html">Properties</a></li>
+                        <li class="nav-item"><a class="nav-link" href="bookings.html">Bookings</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Lead Details: <span id="lead-name-header"></span></h1>
+                    <a href="leads.html" class="btn btn-outline-secondary">Back to Leads</a>
+                </div>
+
+                <div id="loader" class="loader d-block">Loading...</div>
+
+                <div id="content" class="d-none">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="card mb-4">
+                                <div class="card-header bg-light fw-bold">Customer Information</div>
+                                <div class="card-body">
+                                    <p><strong>Code:</strong> <span id="dt-code"></span></p>
+                                    <p><strong>Name:</strong> <span id="dt-name"></span></p>
+                                    <p><strong>Phone:</strong> <span id="dt-phone"></span></p>
+                                    <p><strong>Email:</strong> <span id="dt-email"></span></p>
+                                    <p><strong>Source:</strong> <span id="dt-source"></span></p>
+                                    <p><strong>Requirement:</strong> <span id="dt-req"></span></p>
+                                    <p><strong>Budget:</strong> <span id="dt-budget"></span></p>
+                                    <hr>
+                                    <p><strong>Stage:</strong> <span id="dt-stage" class="badge"></span></p>
+                                    <p><strong>Assigned:</strong> <span id="dt-assigned"></span></p>
+                                    <p><strong>Created:</strong> <span id="dt-created"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4>Follow-ups & Activities</h4>
+                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#activityModal">Add Activity</button>
+                            </div>
+                            <div class="card">
+                                <div class="card-body p-0">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Date/Time</th>
+                                                <th>Type</th>
+                                                <th>Notes</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="activities-table"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Activity Form Modal -->
+    <div class="modal fade" id="activityModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Schedule Follow-up</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="activity-form">
+                        <div class="mb-3">
+                            <label class="form-label">Activity Type *</label>
+                            <select class="form-select" id="act_type" required>
+                                <option value="Phone Call">Phone Call</option>
+                                <option value="WhatsApp">WhatsApp</option>
+                                <option value="Email">Email</option>
+                                <option value="Meeting">Meeting</option>
+                                <option value="Site Visit">Site Visit</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Date & Time *</label>
+                            <input type="datetime-local" class="form-control" id="act_date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" id="act_notes" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Schedule</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/lead-details.js"></script>
+</body>
+</html>

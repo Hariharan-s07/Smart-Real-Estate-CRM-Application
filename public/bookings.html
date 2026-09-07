@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookings - Real Estate CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">RE CRM</a>
+        <div class="w-100 d-flex justify-content-end align-items-center pe-3">
+            <span class="text-light me-3 user-name-display"></span>
+            <a class="btn btn-outline-light btn-sm" href="#" id="logout-btn">Sign out</a>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="leads.html">Leads</a></li>
+                        <li class="nav-item"><a class="nav-link" href="properties.html">Properties</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="bookings.html">Bookings</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Bookings</h1>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookingModal" onclick="openBookingModal()">+ New Booking</button>
+                </div>
+
+                <div id="loader" class="loader d-block">Loading...</div>
+                
+                <div class="table-responsive d-none" id="bookings-container">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Booking Code</th>
+                                <th>Date</th>
+                                <th>Customer (Lead)</th>
+                                <th>Unit Info</th>
+                                <th>Sales Person</th>
+                                <th>Status</th>
+                                <th class="admin-only">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookings-table"></tbody>
+                    </table>
+                    <div id="bookings-empty" class="empty-state d-none">No bookings found.</div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Booking</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="booking-form">
+                        <div class="mb-3">
+                            <label class="form-label">Select Lead / Customer *</label>
+                            <select class="form-select" id="bk_lead_id" required>
+                                <option value="">-- Loading Leads --</option>
+                            </select>
+                            <small class="text-muted">Only active leads are shown.</small>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Select Project *</label>
+                                <select class="form-select" id="bk_proj_id" required>
+                                    <option value="">-- Select Project --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Select Building *</label>
+                                <select class="form-select" id="bk_bld_id" required disabled>
+                                    <option value="">-- Select Building --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Select Available Unit *</label>
+                            <select class="form-select" id="bk_unit_id" required disabled>
+                                <option value="">-- Select Unit --</option>
+                            </select>
+                        </div>
+
+                        <div class="card bg-light mb-3 d-none" id="unit-info-card">
+                            <div class="card-body">
+                                <h6>Unit Details</h6>
+                                <p class="mb-1">Number: <span id="ui-num" class="fw-bold"></span></p>
+                                <p class="mb-1">Type: <span id="ui-type"></span> | Area: <span id="ui-area"></span></p>
+                                <p class="mb-1">Price: <span id="ui-price" class="text-success fw-bold"></span></p>
+                                <p class="mb-0">Current Status: <span id="ui-status" class="status-available">Available</span></p>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning" id="booking-error" style="display:none;"></div>
+
+                        <button type="submit" class="btn btn-success w-100" id="confirm-booking-btn" disabled>Confirm Booking</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancel Confirmation Modal -->
+    <div class="modal fade" id="cancelModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Cancel Booking</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <p>Are you sure you want to cancel this booking? This will make the unit Available again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="confirm-cancel-btn">Confirm Cancellation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/bookings.js"></script>
+</body>
+</html>
