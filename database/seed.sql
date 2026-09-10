@@ -1,5 +1,4 @@
 -- database/seed.sql
-USE real_estate_crm;
 
 -- Sample Users (Password is 'password123' for all, hashed with bcrypt 10 rounds)
 INSERT INTO users (name, email, password, role) VALUES 
@@ -35,5 +34,5 @@ INSERT INTO leads (lead_code, customer_name, phone, email, lead_source, requirem
 
 -- Sample Follow-up
 INSERT INTO lead_activities (lead_id, activity_type, activity_date, notes, status, created_by) VALUES 
-(1, 'Phone Call', DATE_ADD(NOW(), INTERVAL 1 DAY), 'Follow up on 2BHK requirement', 'Scheduled', 2),
-(2, 'Site Visit', DATE_SUB(NOW(), INTERVAL 1 DAY), 'Missed site visit', 'Overdue', 3);
+(1, 'Phone Call', datetime('now', '+1 day'), 'Follow up on 2BHK requirement', 'Scheduled', 2),
+(2, 'Site Visit', datetime('now', '-1 day'), 'Missed site visit', 'Overdue', 3);
